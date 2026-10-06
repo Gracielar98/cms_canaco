@@ -1,5 +1,4 @@
 from django.shortcuts import render 
-
 from django.shortcuts import render
  
  
@@ -53,3 +52,8 @@ def crud_usuarios(request):
 
 def editar_categoria(request):
     return render(request, 'home/editar_categoria.html')
+
+def registro(request):
+    return render(request, 'home/registro.html')
+
+    

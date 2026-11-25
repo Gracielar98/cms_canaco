@@ -1,25 +1,27 @@
-/*
-* Template Name: Canaco
-* Template Author: Untree.co
-* Template License: https://creativecommons.org/licenses/by/3.0/
-* Author URI: https://untree.co/
+.hero, .custom-navbar {
+  background-color: #3b5d50 !important; /* Verde obscuro Furni */
+}
 
-* Twitter: https://twitter.com/Untree_co
-* Facebook: https://web.facebook.com/Untree.co/
-*/
-$font-family-sans-serif: 'Work Sans', sans-serif;
-$font-family-sans-serif-secondary: 'Work Sans', sans-serif;
+.custom-navbar .navbar-brand {
+  font-weight: 700;
+  font-size: 32px;
+  color: #ffffff;
+}
 
-$primary: #214252;
-$secondary: #4D4C7D;
+.custom-navbar .navbar-brand span {
+  color: #93b1a6;
+}
 
-@import 'bootstrap/mixins';
-@import 'bootstrap/functions';
-@import 'bootstrap/variables';
+.hero {
+  padding: calc(4rem + 2vw) 0;
+}
 
-@import 'bootstrap/bootstrap';
+.hero h1 {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 50px;
+}
 
-@import 'components/site-navbar';
-@import 'components/site-base';
-@import 'components/site-blocks';
-@import 'components/site-footer';
+.hero p {
+  color: rgba(255, 255, 255, 0.7);
+}

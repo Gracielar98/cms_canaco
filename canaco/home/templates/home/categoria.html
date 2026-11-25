@@ -1,38 +1,89 @@
-{% extends 'partials/base.html' %} 
-{% load static %} 
-{% block title %}Categorías{% endblock %} 
-{% block content %} 
-<section class="section"> 
-<div class="container"> 
-<div class="row mb-4"> 
-<div class="col-lg-8"> 
-<h2 class="posts-entry-title"> 
-Categoría: Tecnología 
-</h2> 
-</div> 
-<div class="col-lg-4"> 
-<select class="form-control" onchange=""> 
-<option value="categorias">Todas las categorías</option> 
-<option value="tecnologia">Tecnología</option> 
-</select> 
-</div> 
-</div> 
-<div class="row mb-5 align-items-center"> 
-<div class="col-lg-3"> 
-<a href="{% url 'home:noticia' %}" class="img-link"> 
-<img src="{%static 'images/hero_1.jpg' %}" alt="titulo" 
-class="img-fluid category-post-image"> 
-</a> 
-</div> 
-<div class="col-lg-8"> 
-<span class="date">Fecha &bullet; Categoria</span> 
-<h2><a href="{% url 'home:noticia' %}">Titulo de la noticia</a></h2> 
-<p>Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto.  
-Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500</p> 
-<p><a href="{% url 'home:noticia' %}" class="btn btn-sm btn-outline-primary">Leer más</a></p> 
-</div> 
-</div> 
-<p>No hay noticias para esta categoría.</p> 
-</div> 
-</section> 
-{% endblock content %} 
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}Categorías - Canaco{% endblock %}
+
+{% block content %}
+<div class="hero" style="padding: 3rem 0; background-color: #3b5d50;">
+  <div class="container">
+    <h1 class="text-white fw-bold">
+      {% if categoria_actual %}
+        Categoría: {{ categoria_actual.nombre }}
+      {% else %}
+        Catálogo y Categorías
+      {% endif %}
+    </h1>
+    <p class="text-white-50 mb-0">Explora las secciones publicadas.</p>
+  </div>
+</div>
+
+<section class="section" style="padding: 4rem 0;">
+  <div class="container">
+    <div class="row mb-4 align-items-center">
+      <div class="col-lg-8">
+        <h2 class="post-entry-title fw-bold mb-0">
+          {% if categoria_actual %}
+            Publicaciones en {{ categoria_actual.nombre }}
+          {% else %}
+            Todas las noticias
+          {% endif %}
+        </h2>
+      </div>
+      <div class="col-lg-4 mt-3 mt-lg-0">
+        <select class="form-control" onchange="if (this.value) window.location.href=this.value;">
+          <option value="{% url 'home:categoria' %}">Todas las categorías</option>
+          {% for cat in categorias %}
+            <option value="{% url 'home:categoria_detalle' cat.id %}"
+              {% if categoria_actual and categoria_actual.id == cat.id %}selected{% endif %}>
+              {{ cat.nombre }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    {% for noticia in publicaciones %}
+      <div class="row mb-5 align-items-center border-bottom pb-4">
+        <div class="col-lg-4 mb-3 mb-lg-0">
+          <a href="{% url 'home:noticia_detalle' noticia.id %}" class="img-link">
+            {% if noticia.imagen_portada %}
+              <img src="{{ noticia.imagen_portada.display_url }}" alt="{{ noticia.titulo }}"
+                class="img-fluid rounded-4 category-post-image"
+                style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+            {% else %}
+              <img src="{% static 'images/img_1_horizontal.jpg' %}" alt="{{ noticia.titulo }}"
+                class="img-fluid rounded-4 category-post-image"
+                style="height: 200px; width: 100%; object-fit: cover; object-position: center;">
+            {% endif %}
+          </a>
+        </div>
+        <div class="col-lg-8">
+          <span class="date small text-muted d-block mb-1">
+            {{ noticia.createdat|date:"d M Y" }} &bullet;
+            {% if noticia.categoria %}
+              {{ noticia.categoria.nombre }}
+            {% else %}
+              Sin categoría
+            {% endif %}
+          </span>
+          <h3 class="h4 fw-bold">
+            <a href="{% url 'home:noticia_detalle' noticia.id %}" class="text-decoration-none text-dark">
+              {{ noticia.titulo }}
+            </a>
+          </h3>
+          {% if noticia.resumen %}
+            <p class="text-muted">{{ noticia.resumen }}</p>
+          {% endif %}
+          <a href="{% url 'home:noticia_detalle' noticia.id %}" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+            Leer más
+          </a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="alert alert-light border text-center py-4">
+        No hay noticias para esta categoría.
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
